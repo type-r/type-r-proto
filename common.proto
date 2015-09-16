@@ -11,12 +11,7 @@ syntax = "proto3";
 package typer;
 
 import "google/protobuf/any.proto";
-
-// An opaque container for representing timestamps.
-message Timestamp {
-  // Number of microseconds since the beginning of Unix epoch.
-  uint64 timestamp = 1;
-}
+import "google/protobuf/timestamp.proto";
 
 // A message received by an option.
 message Message {
@@ -26,7 +21,7 @@ message Message {
 
   // The timestamp at which the message was received in the receiving
   // backend's clock.
-  Timestamp received_timestamp = 2;
+  google.protobuf.Timestamp received_timestamp = 2;
 
   // The actual body of the message.
   bytes body = 3;

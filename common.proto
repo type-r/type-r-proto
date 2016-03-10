@@ -32,9 +32,9 @@ message Message {
   //
   // The path elements are separated by the slashes.  The assignment is
   // backend-specific, and the only requirement is that the medium is the first
-  // part of the path.  All components of the path should be replaced, commonly
-  // with percents.  For example, Zephyr triple (sipb, OS/2, *) would
-  // correspond to the sortpath "zephyr/ATHENA.MIT.EDU/sipb/OS%2".
+  // part of the path.  All components of the path should be replaced with
+  // double-slash For example, Zephyr triple (sipb, OS/2, *) would correspond
+  // to the sortpath "zephyr/ATHENA.MIT.EDU/sipb/OS//2".
   string sortpath = 4;
   repeated string secondary_sortpath = 5;
 
@@ -56,12 +56,4 @@ message Error {
   string code = 2;
   // Human-readable error description.
   string description = 3;
-}
-
-// Wrapper around the messages which can possibly fail.
-message Maybe {
-  oneof value {
-    google.protobuf.Any content = 1;
-    Error error = 2;
-  }
 }

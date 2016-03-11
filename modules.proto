@@ -1,0 +1,46 @@
+//
+// Type-R module announcement protocol.
+//
+// The framing protocol between the core (C) and the module (M) shall be as
+// follows (all integers are little-endian):
+//   1. M -> C: 32-bit magic 54 59 50 52 (TYPR)
+//   2. M -> C: 32-bit version number, 0x1
+//   3. C reads those 8 bytes and forcibly kills M if either do not match
+//      expected.
+//   4. Going forward, all M <-> C communication is using protobufs.  Each
+//      protobuf is prefixed by a 32-bit unsigned integer indicating its size.
+//   5. M -> C: sends ModuleAnnouncement
+//   6. C -> M: sends ModuleAcknowledgement
+//   7. M <-> C: use common RPC protocol
+//
+
+syntax = "proto3";
+
+package typer;
+
+import "google/protobuf/any.proto";
+
+// Announcement of the module and its capabilities to the core.
+message ModuleAnnouncement {
+  // The module name.  Must be unique in the system, and can used by the other
+  // agents in the system to address this module.
+  string name = 1;
+
+  // String identifying the version of the core.  Not machine-readable.
+  string version = 2;
+
+  // A list of string constants uniquely identifying the interfaces provided by
+  // the modules.  For instance, options (modules providing interfaces to
+  // specific messaging protocols) list "option" here.
+  repeated string capabilities = 3;
+
+  // If specific capabilities of the module require extra information being
+  // provided, it can be listed here.
+  map<string, google.protobuf.Any> capability_parameters = 7;
+};
+
+// Acknowledgement of the module capabilities by the core.
+message ModuleAcknowledged {
+  // Version of the core.
+  string version = 1;
+};

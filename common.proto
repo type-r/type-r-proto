@@ -23,7 +23,7 @@ message Message {
   // backend's clock.
   google.protobuf.Timestamp received_timestamp = 2;
 
-  // The actual body of the message.
+  // The actual body of the message.  Depending on the protocol, may be binary.
   bytes body = 3;
 
   // Sortpaths are the mechanism Type-R uses to filter messages.  The most

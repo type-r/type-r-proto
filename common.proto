@@ -13,6 +13,26 @@ package typer;
 import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
+// Sortpaths are the mechanism Type-R uses to filter messages.  The most
+// common way to filter messages is hierarchical.  Hence, each message gets
+// assigned a hierarchical path, and it can be prefix-searched efficiently.
+//
+// The path is internally represented as a tuple of strings.  The path
+// assignment is medium-specific, and the only requirement is that the name of
+// the medium is the first part of the path.  No nulls are allowed as a part of
+// the component.
+//
+// The convention for displaying and parsing sortpaths is that they should be
+// separated by a slash, and use backslash as an escaping mechanism.  For
+// example, sortpath (zephyr, ATHENA.MIT.EDU, sipb, OS/2\, *) would correspond
+// to the string representation of "zephyr/ATHENA.MIT.EDU/sipb/OS\/2\\".
+//
+// When an alphabetic ordering is required and the database is binary-clean,
+// the sortpaths may be concatenated with nulls.
+message Sortpath {
+  repeated string components = 1;
+}
+
 // A message received by an option.
 message Message {
   // The medium name, which is used to associate the message with the backend
@@ -26,17 +46,8 @@ message Message {
   // The actual body of the message.  Depending on the protocol, may be binary.
   bytes body = 3;
 
-  // Sortpaths are the mechanism Type-R uses to filter messages.  The most
-  // common way to filter messages is hierarchical.  Hence, each message gets
-  // assigned a hierarchical path, and it can be prefix-searched efficiently.
-  //
-  // The path elements are separated by the slashes.  The assignment is
-  // backend-specific, and the only requirement is that the medium is the first
-  // part of the path.  All components of the path should be replaced with
-  // double-slash For example, Zephyr triple (sipb, OS/2, *) would correspond
-  // to the sortpath "zephyr/ATHENA.MIT.EDU/sipb/OS//2".
-  string sortpath = 4;
-  repeated string secondary_sortpath = 5;
+  Sortpath sortpath = 4;
+  repeated Sortpath secondary_sortpath = 5;
 
   // Message ordinal is a unique number in the system assigned by the core
   // whenever the message is accepted from an option.  It is used to sort

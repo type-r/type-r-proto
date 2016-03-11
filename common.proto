@@ -47,13 +47,3 @@ message Message {
   // Option-specific metadata.
   map<string, google.protobuf.Any> metadata = 7;
 }
-
-// Message encapsulating the error status.
-message Error {
-  // Module in which the error originated.
-  string origin = 1;
-  // Machine-readable error code string.
-  string code = 2;
-  // Human-readable error description.
-  string description = 3;
-}

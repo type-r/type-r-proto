@@ -18,8 +18,6 @@ syntax = "proto3";
 
 package typer;
 
-import "google/protobuf/any.proto";
-
 // Announcement of the module and its capabilities to the core.
 message ModuleAnnouncement {
   // The module name.  Must be unique in the system, and can used by the other
@@ -36,7 +34,7 @@ message ModuleAnnouncement {
 
   // If specific capabilities of the module require extra information being
   // provided, it can be listed here.
-  map<string, google.protobuf.Any> capability_parameters = 7;
+  map<string, bytes> capability_parameters = 7;
 };
 
 // Acknowledgement of the module capabilities by the core.

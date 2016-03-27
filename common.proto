@@ -10,7 +10,6 @@ syntax = "proto3";
 
 package typer;
 
-import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 // Sortpaths are the mechanism Type-R uses to filter messages.  The most
@@ -56,5 +55,5 @@ message Message {
   uint64 ordinal = 6;
 
   // Option-specific metadata.
-  map<string, google.protobuf.Any> metadata = 7;
+  map<string, bytes> metadata = 7;
 }
